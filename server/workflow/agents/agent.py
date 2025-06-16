@@ -42,20 +42,9 @@ class Agent(ABC):
 
 
     # LLM 호출
+    @abstractmethod
     def _generate_response(self, state: AgentState) -> AgentState:
-        response = ""
-        helps = []
-        if self.role == AgentType.ANSWER:
-            query = state["answer_state"]["query"]
-            vectorstore, chain = get_search_chain()
-            response = chain.invoke(query)
-        elif self.role == AgentType.HELPER:
-            previous_messages = [m for m in state["answer_state"]["messages"] if m["role"] == AgentType.ANSWER]
-            last_answer_message = previous_messages[-1]["content"] if previous_messages else ""
-            next_quries = get_next_query(last_answer_message)
-            helps = next_quries
-            
-        return {**state, "response": response, "helps": helps}
+        pass
 
     # 상태 업데이트
     def _update_state(self, state: AgentState) -> AgentState:
