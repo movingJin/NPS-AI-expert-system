@@ -29,10 +29,10 @@ def extract_tables_from_pdf(file_path):
 
 
 def get_search_chain():
-    loader = PyMuPDFLoader("./2025 알기쉬운 국민연금 사업장 실무안내.pdf")
+    loader = PyMuPDFLoader("./data.pdf")
     docs = loader.load()
 
-    table_texts = extract_tables_from_pdf("./2025 알기쉬운 국민연금 사업장 실무안내.pdf")
+    table_texts = extract_tables_from_pdf("./data.pdf")
     table_docs = [Document(page_content=t, metadata={"source": "table"}) for t in table_texts]
 
     all_docs = docs + table_docs

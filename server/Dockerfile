@@ -7,9 +7,9 @@ ADD ./retrieval ./retrieval
 ADD ./routers ./routers
 ADD ./utils ./utils
 ADD ./workflow ./workflow
-COPY ./.env ./.env
-COPY ./2025 알기쉬운 국민연금 사업장 실무안내.pdf ./2025 알기쉬운 국민연금 사업장 실무안내.pdf
-COPY ./main.py ./main.py
+COPY ./.env ./
+COPY ./data.pdf ./
+COPY ./main.py ./
 
 # Set up virtual environment and install dependencies
 RUN pip install fastapi uvicorn python-dotenv
