@@ -1,6 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
-from routers import workflow
+from routers import router
 
 from db.database import Base, engine
 #from server.routers import history
@@ -14,8 +14,8 @@ app = FastAPI(
 )
 
 # app.include_router(history.router)
-app.include_router(workflow.router)
+app.include_router(router.router)
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8001, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8082)

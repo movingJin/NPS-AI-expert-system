@@ -4,7 +4,7 @@ import streamlit as st
 from components.left_frame import render_sidebar
 from utils.state_manager import init_session_state, reset_session_state
 
-API_BASE_URL = "http://localhost:8002/api/v1"
+API_BASE_URL = "http://localhost:8082/api/v1"
 
 
 class AgentType:

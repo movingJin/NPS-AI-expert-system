@@ -1,7 +1,9 @@
 import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from langchain_openai import AzureChatOpenAI, AzureOpenAIEmbeddings
+from dotenv import load_dotenv
 
+load_dotenv()
 class Settings():
     AOAI_API_KEY: str = os.getenv("AOAI_API_KEY")
     AOAI_ENDPOINT: str = os.getenv("AOAI_ENDPOINT")
@@ -12,9 +14,6 @@ class Settings():
     LANGFUSE_PUBLIC_KEY: str
     LANGFUSE_SECRET_KEY: str
     LANGFUSE_HOST: str
-
-    API_V1_STR: str = "/api/v1"
-    PROJECT_NAME: str = "Debate Arena API"
 
     BACKEND_CORS_ORIGINS: list[str] = ["*"]
 
