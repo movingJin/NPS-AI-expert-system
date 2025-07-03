@@ -110,7 +110,7 @@ def display_answer_results():
         ]:
             continue
 
-        st.subheader(f"질문: 『{message["query"]}』에 대한 AI 답변")
+        st.subheader(f"질문: 『{message['query']}』에 대한 AI 답변")
         if role == AgentType.ANSWER:
             avatar = "📣"
         elif role == AgentType.HELPER:
