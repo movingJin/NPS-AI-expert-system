@@ -2,9 +2,11 @@ from retrieval.search_service import get_search_chain
 from workflow.graph import create_expert_graph
 from langfuse.callback import CallbackHandler
 from workflow.state import AnswerState
+from utils.config import save_vectorstore
 
 
 if __name__ == '__main__':
+    save_vectorstore()
     # vectorstore, chain = get_search_chain()
     # response = chain.invoke("2025년 6월 기준, 현재 나이 35세의 사람의 조기노령연금 수급연령을 알려줘.")
     # print(response)

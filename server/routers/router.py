@@ -6,7 +6,7 @@ from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from langfuse.callback import CallbackHandler
-
+from utils.config import save_vectorstore
 from workflow.state import AgentType, AnswerState
 from workflow.graph import create_expert_graph
 
@@ -25,6 +25,9 @@ class WorkflowRequest(BaseModel):
 class WorkflowResponse(BaseModel):
     status: str = "success"
     result: Any = None
+
+
+save_vectorstore()
 
 
 async def answer_generator(answer_graph, initial_state, langfuse_handler):

@@ -1,46 +1,14 @@
-from langchain.schema import Document
 from typing import List, Literal
 from langchain.schema import HumanMessage, SystemMessage
-from utils.config import get_llm
-from utils.config import get_embeddings
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from utils.config import get_llm, load_vectorstore
 from langchain_core.runnables import RunnablePassthrough
-from langchain_community.document_loaders import PyMuPDFLoader
-from langchain_community.vectorstores import FAISS
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
-import pdfplumber
-
-
-def extract_tables_from_pdf(file_path):
-    table_texts = []
-    with pdfplumber.open(file_path) as pdf:
-        for page in pdf.pages:
-            tables = page.extract_tables()
-            for table in tables:
-                formatted_table = "\n".join([
-                    "\t".join([
-                        str(cell).replace("\n", " ").strip() if cell is not None else "" 
-                        for cell in row
-                    ]) for row in table
-                ])
-                table_texts.append(formatted_table)
-    return table_texts
 
 
 def get_search_chain():
-    loader = PyMuPDFLoader("./data.pdf")
-    docs = loader.load()
-
-    table_texts = extract_tables_from_pdf("./data.pdf")
-    table_docs = [Document(page_content=t, metadata={"source": "table"}) for t in table_texts]
-
-    all_docs = docs + table_docs
-
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=100)
-    split_documents = text_splitter.split_documents(all_docs)
-    embeddings = get_embeddings()
-
+    vectorstore = load_vectorstore()
+    retriever = vectorstore.as_retriever()
     examples = [
     """
     질문) 현재 나이 35세의 사람의 노령연금 수급연령을 알려줘.
@@ -67,8 +35,6 @@ def get_search_chain():
     응답) 요청하신 파주지사의 전화번호: 031-956-3622 FAX번호: 031-303-2226 입니다.
             출처 및 근거: 163페이지 참조.
     """]
-    vectorstore = FAISS.from_documents(documents=split_documents, embedding=embeddings)
-    retriever = vectorstore.as_retriever()
     prompt = PromptTemplate.from_template(
         """You are a Korean-speaking expert in 국민연금 실무.
         표 형식 데이터도 포함되어 있으며, 표 안의 수치, 조건, 예외사항이 핵심일 수 있습니다.
@@ -98,7 +64,7 @@ def get_search_chain():
         | StrOutputParser()
     )
 
-    return vectorstore, chain
+    return chain
 
 
 def get_next_query(
