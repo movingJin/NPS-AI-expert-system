@@ -10,5 +10,4 @@ COPY ./main.py ./
 RUN pip install streamlit
 
 EXPOSE 8501
-ENTRYPOINT ["streamlit", "run", "main.py"]
-CMD ["--host=0.0.0.0"]
+ENTRYPOINT ["streamlit", "run", "main.py", "--server.port=8501"]
